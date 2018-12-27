@@ -1,20 +1,26 @@
 
 import java.sql.*;
 import java.util.Calendar;
+import java.util.Scanner;
+
 public class sqlDriver {
-	
 	private String Driver;
 	private String URL; 
+	private String user;
+	private String password; 
 	
-	public sqlDriver(String URL, String Driver) {
+	public sqlDriver(String URL, String Driver,String user, String password) {
 		this.URL = URL;
 		this.Driver = Driver; 
+		this.user = user;
+		this.password = password; 
 	}
-public void insertData(String database) {
-	    try{
-	      Class.forName(Driver);
+	
+public void insertData(String database) throws Exception{
+	
+   		Class.forName(Driver);
 	      //OPEN SQL DATABASE CONNECTION 
-	      Connection conn = DriverManager.getConnection(URL, "root", "");
+	      Connection conn = DriverManager.getConnection(URL, user, password);
 	    
 	      //CREATE DATE FOR INSERTION
 	      Calendar calendar = Calendar.getInstance();
@@ -35,20 +41,22 @@ public void insertData(String database) {
 	      //CLOSE CONNECTION
 	      conn.close();
 	    }
-	    catch (Exception e){
-	      System.err.println("ERROR PRINTING DATA. "
-	      		+ "CHECK DATABASE CONNECTION.");
-	    }
-	  }
 
 
-	public static void main(String[] args) {
-	    String Driver = "org.gjt.mm.mysql.Driver";
-	    String URL = "jdbc:mysql://localhost/";
+	public static void main(String[] args) throws Exception {
+	    String Driver = "com.mysql.jdbc.Driver";
+	    String URL = "jdbc:mysql://localhost:3306/dnd3e";
+	    String user, password; 
 	    
+		Scanner scan = new Scanner(System.in); 
+		System.out.print("Username: ");
+		user = scan.next();
+		System.out.print("Password: ");
+		password = scan.next();
 		
-		sqlDriver x = new sqlDriver(Driver, URL); 
+		sqlDriver x = new sqlDriver(URL, Driver, user, password); 
 		x.insertData("friendsList(id, name, birthday)");
+		scan.close(); 
 	}
 }
 
