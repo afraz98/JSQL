@@ -1,6 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -21,25 +20,6 @@ public class JSQL extends JFrame {
 	private JTextField usernameText;
 	private JPasswordField passwordText;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JSQL frame = new JSQL();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public JSQL() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 537);
@@ -119,6 +99,10 @@ public class JSQL extends JFrame {
 		URL = "jdbc:mysql://" + ip + ":" + port + "/" + database;
 		sqlDriver x = new sqlDriver(URL, user, password); 
 		x.insertData("friendsList(id, name, birthday)");
-		scan.close(); 
+		scan.close();
+	}
+	public static void main(String[] args) throws Exception {
+		JSQL l = new JSQL();
 	}
 }
+
