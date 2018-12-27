@@ -8,29 +8,32 @@ public class sqlDriver {
 	private String URL; 
 	private String user;
 	private String password; 
+	private Connection c; 
 	
 	public sqlDriver(String URL, String user, String password) {
 		this.URL = URL;
-	   Driver = "com.mysql.jdbc.Driver";
+	   Driver = "com.mysql.cj.jdbc.Driver";
 		this.user = user;
 		this.password = password; 
 	}
 	
-public void insertData(String database) throws Exception{
+public void connectSQL() throws Exception{
 	
    		Class.forName(Driver);
 	      //OPEN SQL DATABASE CONNECTION 
-	      Connection conn = DriverManager.getConnection(URL, user, password);
-	    
-	      //CREATE DATE FOR INSERTION
-	      Calendar calendar = Calendar.getInstance();
-	      java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
+	      c = DriverManager.getConnection(URL, user, password);
+}
+public void insertData(String database) throws Exception{
+
+	//CREATE DATE FOR INSERTION
+   Calendar calendar = Calendar.getInstance();
+   java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
 
 	      //SQL QUERY
 	      String query = "INSERT INTO " + database +" VALUES(?, ?, ?)";
 
 	      //FORMAT QUERY
-	      PreparedStatement preparedStmt = conn.prepareStatement(query);
+	      PreparedStatement preparedStmt = c.prepareStatement(query);
 	      preparedStmt.setString (1, "1");
 	      preparedStmt.setString (2, "testCommit");
 	      preparedStmt.setDate   (3, startDate);
@@ -39,8 +42,8 @@ public void insertData(String database) throws Exception{
 	      preparedStmt.execute();
 	      
 	      //CLOSE CONNECTION
-	      conn.close();
-	    }
+	      c.close();
+}
 
 
 	public static void main(String[] args) throws Exception {
@@ -61,6 +64,7 @@ public void insertData(String database) throws Exception{
 		
 		URL = "jdbc:mysql://" + ip + ":" + port + "/" + database;
 		sqlDriver x = new sqlDriver(URL, user, password); 
+		x.connectSQL();
 		x.insertData("friendsList(id, name, birthday)");
 		scan.close(); 
 	}

@@ -85,7 +85,9 @@ public class JSQL extends JFrame {
 		});
 		btnStartQuery.setBounds(120, 380, 174, 25);
 		contentPane.add(btnStartQuery);
+		setVisible(true);
 	}
+	
 	public void connect() throws Exception {
 	    String user, password, ip, port, database, URL; 
 		Scanner scan = new Scanner(System.in); 
@@ -97,7 +99,8 @@ public class JSQL extends JFrame {
 		password = String.valueOf(passwordText.getPassword());
 		
 		URL = "jdbc:mysql://" + ip + ":" + port + "/" + database;
-		sqlDriver x = new sqlDriver(URL, user, password); 
+		sqlDriver x = new sqlDriver(URL, user, password);
+		x.connectSQL();
 		x.insertData("friendsList(id, name, birthday)");
 		scan.close();
 	}
