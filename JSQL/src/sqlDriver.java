@@ -9,9 +9,9 @@ public class sqlDriver {
 	private String user;
 	private String password; 
 	
-	public sqlDriver(String URL, String Driver,String user, String password) {
+	public sqlDriver(String URL, String user, String password) {
 		this.URL = URL;
-		this.Driver = Driver; 
+	   Driver = "com.mysql.jdbc.Driver";
 		this.user = user;
 		this.password = password; 
 	}
@@ -44,17 +44,23 @@ public void insertData(String database) throws Exception{
 
 
 	public static void main(String[] args) throws Exception {
-	    String Driver = "com.mysql.jdbc.Driver";
-	    String URL = "jdbc:mysql://localhost:3306/dnd3e";
-	    String user, password; 
-	    
+	    String user, password, ip, port, database, URL; 
 		Scanner scan = new Scanner(System.in); 
+		
+		System.out.print("IP Address: ");
+		ip = scan.next(); 
+		System.out.print("Port: ");
+		port = scan.next(); 
+		System.out.println("Database: ");
+		database = scan.next(); 
+		
 		System.out.print("Username: ");
 		user = scan.next();
 		System.out.print("Password: ");
 		password = scan.next();
 		
-		sqlDriver x = new sqlDriver(URL, Driver, user, password); 
+		URL = "jdbc:mysql://" + ip + ":" + port + "/" + database;
+		sqlDriver x = new sqlDriver(URL, user, password); 
 		x.insertData("friendsList(id, name, birthday)");
 		scan.close(); 
 	}
