@@ -72,7 +72,12 @@ public class JSQL extends JFrame {
 		passwordText.setBounds(120, 345, 174, 22);
 		contentPane.add(passwordText);
 		
-		JButton btnStartQuery = new JButton("Start Query");
+		ipText.setText("localhost");
+		portText.setText("3306");
+		usernameText.setText("root");
+		databaseText.setText("dnd3e");
+		
+		JButton btnStartQuery = new JButton("Connect");
 		btnStartQuery.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -90,8 +95,6 @@ public class JSQL extends JFrame {
 	
 	public void connect() throws Exception {
 	    String user, password, ip, port, database, URL; 
-		Scanner scan = new Scanner(System.in); 
-		
 		ip = ipText.getText();
 		port = portText.getText();
 		database = databaseText.getText();
@@ -101,11 +104,11 @@ public class JSQL extends JFrame {
 		URL = "jdbc:mysql://" + ip + ":" + port + "/" + database;
 		sqlDriver x = new sqlDriver(URL, user, password);
 		x.connectSQL();
-		x.insertData("friendsList(id, name, birthday)");
-		scan.close();
+		setVisible(false);
+		new JSQLQuery(x); 
 	}
 	public static void main(String[] args) throws Exception {
-		JSQL l = new JSQL();
+		new JSQL();
 	}
 }
 

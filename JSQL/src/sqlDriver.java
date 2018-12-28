@@ -8,13 +8,14 @@ public class sqlDriver {
 	private String URL; 
 	private String user;
 	private String password; 
-	private Connection c; 
+	private Connection c;
 	
 	public sqlDriver(String URL, String user, String password) {
 		this.URL = URL;
 	   Driver = "com.mysql.cj.jdbc.Driver";
 		this.user = user;
-		this.password = password; 
+		this.password = password;
+		c = null;
 	}
 	
 public void connectSQL() throws Exception{
@@ -23,28 +24,44 @@ public void connectSQL() throws Exception{
 	      //OPEN SQL DATABASE CONNECTION 
 	      c = DriverManager.getConnection(URL, user, password);
 }
-public void insertData(String database) throws Exception{
-
+public PreparedStatement insertData(String database) throws Exception{
+	if(database == null) {
+		return null; 
+	}
 	//CREATE DATE FOR INSERTION
    Calendar calendar = Calendar.getInstance();
    java.sql.Date startDate = new java.sql.Date(calendar.getTime().getTime());
 
+   
+   
 	      //SQL QUERY
 	      String query = "INSERT INTO " + database +" VALUES(?, ?, ?)";
-
+	      
 	      //FORMAT QUERY
 	      PreparedStatement preparedStmt = c.prepareStatement(query);
-	      preparedStmt.setString (1, "1");
-	      preparedStmt.setString (2, "testCommit");
+	      preparedStmt.setString (1, "4");
+	      preparedStmt.setString (2, "Richard K");
 	      preparedStmt.setDate   (3, startDate);
-	      
-	      //EXECUTE QUERY
-	      preparedStmt.execute();
-	      
-	      //CLOSE CONNECTION
-	      c.close();
+	      return preparedStmt; 
 }
 
+public PreparedStatement makeQuery(String query) throws SQLException {
+   PreparedStatement preparedStmt = c.prepareStatement(query);
+   return preparedStmt; 
+}
+
+public void sendQuery(PreparedStatement ps) throws Exception{
+	if(ps == null) {
+		return;
+	}
+
+   //EXECUTE QUERY
+   ps.execute();
+   
+   //CLOSE CONNECTION
+   c.close();
+	
+}
 
 	public static void main(String[] args) throws Exception {
 	    String user, password, ip, port, database, URL; 
@@ -65,7 +82,7 @@ public void insertData(String database) throws Exception{
 		URL = "jdbc:mysql://" + ip + ":" + port + "/" + database;
 		sqlDriver x = new sqlDriver(URL, user, password); 
 		x.connectSQL();
-		x.insertData("friendsList(id, name, birthday)");
+		x.sendQuery(x.insertData("friendsList(id, name, birthday)"));
 		scan.close(); 
 	}
 }
